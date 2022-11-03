@@ -1,5 +1,5 @@
 resource "aws_vpc" "vpc" {
-  cidr_block = "192.168.0.0/22"
+  cidr_block = var.vpc_cidr_block
 }
 
 data "aws_availability_zones" "azs" {
@@ -9,19 +9,19 @@ data "aws_availability_zones" "azs" {
 //TODO refactor to use loop and count.index
 resource "aws_subnet" "subnet_az" {
   availability_zone = data.aws_availability_zones.azs.names[0]
-  cidr_block        = "192.168.0.0/24"
+  cidr_block        = var.subnet_cidr_block
   vpc_id            = aws_vpc.vpc.id
 }
 
 resource "aws_subnet" "subnet_az2" {
   availability_zone = data.aws_availability_zones.azs.names[1]
-  cidr_block        = "192.168.1.0/24"
+  cidr_block        = var.subnet_cidr_block
   vpc_id            = aws_vpc.vpc.id
 }
 
 resource "aws_subnet" "subnet_az3" {
   availability_zone = data.aws_availability_zones.azs.names[2]
-  cidr_block        = "192.168.2.0/24"
+  cidr_block        = var.subnet_cidr_block
   vpc_id            = aws_vpc.vpc.id
 }
 
@@ -30,7 +30,7 @@ resource "aws_security_group" "sg" {
 }
 
 resource "aws_kms_key" "kms" {
-  description = "example"
+  description = "kafka cluster kms key"
 }
 
 resource "aws_cloudwatch_log_group" "test" {
@@ -94,7 +94,7 @@ resource "aws_msk_cluster" "kafka-cluster" {
   broker_node_group_info {
     instance_type = "kafka.m5.large"
     client_subnets = [
-      aws_subnet.subnet_az1.id,
+      aws_subnet.subnet_az.id,
       aws_subnet.subnet_az2.id,
       aws_subnet.subnet_az3.id,
     ]

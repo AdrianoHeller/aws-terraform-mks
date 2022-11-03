@@ -32,3 +32,13 @@ variable "updated_at" {
   type = string
 
 }
+
+variable "vpc_cidr_block" {
+  type = string
+  default = "192.168.0.0/22"
+}
+
+variable "subnet_cidr_block" {
+  type = string
+  default = "192.168.0.0/24"
+}
