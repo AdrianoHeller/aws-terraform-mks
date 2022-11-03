@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 1.0.0"
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "4.37.0"
     }
   }
@@ -13,6 +13,6 @@ provider "aws" {
 }
 
 provider "aws" {
-  alias = "OHIO"
+  alias  = "OHIO"
   region = var.aws_alias_region
 }
