@@ -6,7 +6,8 @@ data "aws_availability_zones" "azs" {
   state = "available"
 }
 
-resource "aws_subnet" "subnet_az1" {
+//TODO refactor to use loop and count.index
+resource "aws_subnet" "subnet_az" {
   availability_zone = data.aws_availability_zones.azs.names[0]
   cidr_block        = "192.168.0.0/24"
   vpc_id            = aws_vpc.vpc.id
@@ -144,10 +145,10 @@ resource "aws_msk_cluster" "kafka-cluster" {
 }
 
 output "zookeeper_connect_string" {
-  value = aws_msk_cluster.example.zookeeper_connect_string
+  value = aws_msk_cluster.kafka-cluster.zookeeper_connect_string
 }
 
 output "bootstrap_brokers_tls" {
   description = "TLS connection host:port pairs"
-  value       = aws_msk_cluster.example.bootstrap_brokers_tls
+  value       = aws_msk_cluster.kafka-cluster.bootstrap_brokers_tls
 }
